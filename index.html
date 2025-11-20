@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>서울시 공공자전거 실시간 지도</title>
 
+    <!-- 반드시 autoload=false 추가 -->
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=e2efaed976f334ed8785e092f6083b8f&autoload=false"></script>
 
     <style>
@@ -77,6 +78,7 @@
         });
       }
 
+      // 💥 이 부분이 반드시 필요!
       kakao.maps.load(() => {
         initMap();
       });
