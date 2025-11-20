@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>서울시 공공자전거 실시간 지도</title>
 
-    <!-- 카카오 지도 API (본인 키로 바꿔!) -->
-    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=e2efaed976f334ed8785e092f6083b8f"></script>
+    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=e2efaed976f334ed8785e092f6083b8f&autoload=false"></script>
 
     <style>
       #map {
@@ -47,7 +46,6 @@
           const name = item.stationName;
           const bikes = Number(item.parkingBikeTotCnt);
 
-          // 🔥 선택과제: 자전거 수량에 따른 마커 색 구분
           let markerImageUrl =
             bikes === 0
               ? "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
@@ -66,7 +64,6 @@
             image: markerImage,
           });
 
-          // 인포윈도우
           const info = new kakao.maps.InfoWindow({
             content: `<div style="padding:5px; font-size:14px;">
               <b>${name}</b><br>
@@ -74,14 +71,15 @@
             </div>`,
           });
 
-          // 마커 클릭 시 인포윈도우 열기
           kakao.maps.event.addListener(marker, "click", function () {
             info.open(map, marker);
           });
         });
       }
 
-      initMap();
+      kakao.maps.load(() => {
+        initMap();
+      });
     </script>
   </body>
 </html>
