@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>서울시 공공자전거 실시간 지도</title>
 
-    <!-- 반드시 autoload=false 추가 -->
-    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=48c2e0fb94a49f4f20f97ba9199725a0&autoload=false"></script>
+    <!-- 카카오 지도 API (본인 키로 바꿔!) -->
+    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=48c2e0fb94a49f4f20f97ba9199725a0"></script>
 
     <style>
       #map {
@@ -22,7 +22,7 @@
     <script>
       async function loadBikeData() {
         const url =
-          "https://openapi.seoul.go.kr:8088/4953546d73676d6131303972534a6549/json/bikeList/1/1000/";
+          "http://openapi.seoul.go.kr:8088/4953546d73676d6131303972534a6549/json/bikeList/1/1000/";
 
         try {
           const res = await fetch(url);
@@ -47,12 +47,13 @@
           const name = item.stationName;
           const bikes = Number(item.parkingBikeTotCnt);
 
+          // 🔥 선택과제: 자전거 수량에 따른 마커 색 구분
           let markerImageUrl =
             bikes === 0
-              ? "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
+              ? "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
               : bikes >= 5
-              ? "https://maps.google.com/mapfiles/ms/icons/green-dot.png"
-              : "https://maps.google.com/mapfiles/ms/icons/blue-dot.png";
+              ? "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+              : "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
 
           const markerImage = new kakao.maps.MarkerImage(
             markerImageUrl,
@@ -65,6 +66,7 @@
             image: markerImage,
           });
 
+          // 인포윈도우
           const info = new kakao.maps.InfoWindow({
             content: `<div style="padding:5px; font-size:14px;">
               <b>${name}</b><br>
@@ -72,16 +74,14 @@
             </div>`,
           });
 
+          // 마커 클릭 시 인포윈도우 열기
           kakao.maps.event.addListener(marker, "click", function () {
             info.open(map, marker);
           });
         });
       }
 
-      // 💥 이 부분이 반드시 필요!
-      kakao.maps.load(() => {
-        initMap();
-      });
+      initMap();
     </script>
   </body>
 </html>
